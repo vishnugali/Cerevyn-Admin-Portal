@@ -39,7 +39,11 @@ export default function App() {
   return (
     <div className="app-shell app-container">
       {/* Navigation on the left */}
-      <Sidebar currentTab={currentTab} setCurrentTab={setCurrentTab} />
+      <Sidebar
+        currentTab={currentTab}
+        setCurrentTab={setCurrentTab}
+        onLogout={() => setIsAuthenticated(false)}
+      />
       
       {/* Dashboard or Panel View workspace content on the right */}
       <div className="content-surface">
