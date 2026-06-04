@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --clr-background: #01005D;
+  --clr-surface: #050A30;
+  --clr-surface-alt: #0A0F52;
+  --clr-card: rgba(255, 255, 255, 0.06);
+  --clr-border: rgba(255, 255, 255, 0.12);
+  --clr-text: #E8ECFF;
+  --clr-text-muted: #99A7FF;
+  --clr-button: #0024DE;
+  --clr-button-hover: #1A3CFF;
+  --clr-success: #16A34A;
+  --clr-danger: #DC2626;
+  --clr-warning: #F59E0B;
+}
+
+html, body, #root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--clr-background);
+  color: var(--clr-text);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+.login-page-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background-color: var(--clr-background);
+}
+
+.app-shell {
+  min-height: 100vh;
+  background-color: var(--clr-background);
+  color: var(--clr-text);
+}
+
+.app-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar-surface {
+  width: 240px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: var(--clr-surface);
+  color: var(--clr-text);
+  padding: 24px 16px;
+  z-index: 10;
+}
+
+.sidebar-surface button {
+  font: inherit;
+}
+
+.content-surface {
+  flex-grow: 1;
+  min-height: 100vh;
+  margin-left: 240px;
+  background-color: var(--clr-background);
+  color: var(--clr-text);
+  overflow-y: auto;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--clr-border);
+}
+
+.surface-card {
+  background-color: var(--clr-card);
+  border: 1px solid var(--clr-border);
+  border-radius: 16px;
+}
+
+.btn-primary {
+  background-color: var(--clr-button);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--clr-button-hover);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid var(--clr-border);
+  color: var(--clr-text-muted);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.input-field {
+  background-color: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--clr-border);
+  color: var(--clr-text);
+  border-radius: 999px;
+}
+
+.input-field::placeholder {
+  color: rgba(232, 236, 255, 0.65);
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-panel {
+  background-color: rgba(5, 10, 48, 0.95);
+  border: 1px solid var(--clr-border);
+  border-radius: 16px;
+  padding: 24px;
+  width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.card-border {
+  border-radius: 16px;
+}
