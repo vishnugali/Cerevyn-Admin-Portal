@@ -3,6 +3,13 @@ import {
   Search, BookOpen, Trash2, Eye, Edit3, Plus, 
   SlidersHorizontal, RefreshCw, X, Calendar, Tag, PlayCircle, ChevronDown, Clock, GraduationCap 
 } from 'lucide-react';
+import { createClient } from '@supabase/supabase-js';
+
+// Global Supabase initialization configuration
+const supabaseUrl = 'https://cpvhzdxxpgftjkjqadec.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwdmh6ZHh4cGdmdGpranFhZGVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzMDY4NjEsImV4cCI6MjA5NTg4Mjg2MX0._nBO3Dlv09pHh8LjcLfMH7sovDvQJDz9qKAN_rlrP4I';
+const STORAGE_BUCKET_NAME = 'blog-assets';
+const _supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export default function TutorialsDashboard() {
   // Initial database state
@@ -112,54 +119,75 @@ export default function TutorialsDashboard() {
     setShowFormModal(true);
   };
 
-  const handleFormSubmit = (e) => {
+  const fetchTutorials = async () => {
+    const { data, error } = await _supabase
+      .from('tutorials')
+      .select('*')
+      .order('id', { ascending: false });
+
+    if (error) {
+      console.error('Supabase Fetch Error:', error);
+      return;
+    }
+
+    if (data) {
+      setTutorials(data.map(item => ({
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        category: item.category,
+        duration: item.duration,
+        level: item.level,
+        tags: item.tags || ['General'],
+        ctaStatus: item.video_url ? 'Watch Now' : 'Coming Soon',
+        videoUrl: item.video_url || '',
+        letter: item.title ? item.title.charAt(0).toUpperCase() : '',
+        bgColor: item.category === 'Healthcare' ? '#0024DE' : item.category === 'Education' ? '#0f766e' : '#14532d'
+      })));
+    }
+  };
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!formTitle || !formDescription) {
       alert("Please populate Title and Description parameters before executing.");
       return;
     }
 
-    const processedTags = formTags ? formTags.split(',').map(tag => tag.trim()) : ['General'];
-    const updatedStatus = formVideoUrl ? 'Watch Now' : 'Coming Soon';
-    const firstLetter = formTitle.charAt(0).toUpperCase();
-    const dynamicColor = formCategory === 'Healthcare' ? '#0024DE' : formCategory === 'Education' ? '#0f766e' : '#14532d';
+    const payload = {
+      title: formTitle,
+      description: formDescription,
+      category: formCategory,
+      duration: formDuration,
+      level: formLevel,
+      video_url: formVideoUrl,
+      tags: formTags.split(',').map(tag => tag.trim())
+    };
 
     if (isEditMode) {
-      setTutorials(tutorials.map(t => {
-        if (t.id === currentEditId) {
-          return {
-            ...t,
-            title: formTitle,
-            description: formDescription,
-            category: formCategory,
-            duration: formDuration,
-            level: formLevel,
-            tags: processedTags,
-            ctaStatus: updatedStatus,
-            videoUrl: formVideoUrl,
-            letter: firstLetter,
-            bgColor: dynamicColor
-          };
-        }
-        return t;
-      }));
+      const { error } = await _supabase
+        .from('tutorials')
+        .update(payload)
+        .eq('id', currentEditId);
+
+      if (error) {
+        console.error('Supabase Update Error:', error);
+        alert('Failed to update tutorial in database.');
+        return;
+      }
     } else {
-      const newTrack = {
-        id: Date.now(),
-        title: formTitle,
-        description: formDescription,
-        category: formCategory,
-        duration: formDuration,
-        level: formLevel,
-        tags: processedTags,
-        ctaStatus: updatedStatus,
-        videoUrl: formVideoUrl,
-        letter: firstLetter,
-        bgColor: dynamicColor
-      };
-      setTutorials([newTrack, ...tutorials]);
+      const { error } = await _supabase
+        .from('tutorials')
+        .insert([payload]);
+
+      if (error) {
+        console.error('Supabase Insert Error:', error);
+        alert('Failed to save tutorial to database.');
+        return;
+      }
     }
 
+    await fetchTutorials();
     setShowFormModal(false);
   };
 

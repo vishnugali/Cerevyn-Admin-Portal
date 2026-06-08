@@ -1,162 +1,244 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 export default function Login({ onLoginSuccess }) {
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password === 'admin123') {
+
+    if (password === "admin123") {
       onLoginSuccess();
+    } else {
+      alert("Invalid Password");
     }
   };
 
   return (
-    <div style={{
-      display: 'flex',
-      minHeight: '100vh',
-      width: '100vw',
-      backgroundColor: 'var(--clr-background)',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      margin: 0,
-      padding: 0,
-      boxSizing: 'border-box'
-    }}>
-      <div style={{
-        width: '100%',
-        maxWidth: '420px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: '28px',
-        backgroundColor: 'var(--clr-surface-alt)',
-        border: '1px solid var(--clr-border)',
-        borderRadius: '24px',
-        boxShadow: '0 24px 80px rgba(0, 0, 0, 0.35)'
-      }}>
-        
-        {/* Modern Shield/Security Icon Grid Spacer */}
-        <div style={{ marginBottom: '12px', opacity: 0.9 }}>
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ color: 'var(--clr-button)' }}>
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-        </div>
+    <>
+      <style>{`
 
-        {/* Core Headings */}
-        <h1 style={{ 
-          fontSize: '28px', 
-          fontWeight: '700', 
-          color: 'var(--clr-text)', 
-          margin: '0 0 6px 0',
-          letterSpacing: '-0.5px'
-        }}>
-          Admin Portal
-        </h1>
-        
-        <p style={{ 
-          fontSize: '12px', 
-          fontWeight: '500', 
-          letterSpacing: '0.5px', 
-          color: 'var(--clr-text-muted)', 
-          margin: 0, 
-          textTransform: 'uppercase' 
-        }}>
-          Management Access
-        </p>
+      *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+      }
 
-        <div style={{ 
-          width: '72%', 
-          height: '2px', 
-          backgroundColor: 'var(--clr-button)', 
-          marginTop: '20px'
-        }} />
+      @keyframes float {
+        0%{
+          transform:translateY(0px) translateX(0px);
+        }
+        50%{
+          transform:translateY(-40px) translateX(20px);
+        }
+        100%{
+          transform:translateY(0px) translateX(0px);
+        }
+      }
 
-        <form onSubmit={handleSubmit} style={{ width: '100%', marginTop: '30px' }}>
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            gap: '6px', 
-            marginBottom: '16px',
-            opacity: 0.7
-          }}>
-            <span style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--clr-text-muted)', fontWeight: '500' }}>
-              🛡️ Security Authentication
-            </span>
-          </div>
+      @keyframes fadeUp {
+        from{
+          opacity:0;
+          transform:translateY(30px);
+        }
+        to{
+          opacity:1;
+          transform:translateY(0);
+        }
+      }
 
-          <div style={{ position: 'relative', marginBottom: '24px' }}>
-            <span style={{
-              position: 'absolute',
-              left: '12px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              fontSize: '14px',
-              color: 'var(--clr-text-muted)'
-            }}>
-              🔒
-            </span>
+      .login-page{
+        min-height:100vh;
+        background:#050A30;
+        position:relative;
+        overflow:hidden;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        font-family:Inter,sans-serif;
+      }
+
+      /* Animated Blobs */
+
+      .blob{
+        position:absolute;
+        border-radius:50%;
+        filter:blur(90px);
+      }
+
+      .blob1{
+        width:350px;
+        height:350px;
+        background:#2563EB;
+        top:-100px;
+        left:-100px;
+        opacity:.25;
+        animation:float 8s ease-in-out infinite;
+      }
+
+      .blob2{
+        width:400px;
+        height:400px;
+        background:#06B6D4;
+        bottom:-120px;
+        right:-120px;
+        opacity:.18;
+        animation:float 10s ease-in-out infinite;
+      }
+
+      .blob3{
+        width:250px;
+        height:250px;
+        background:#3B82F6;
+        top:50%;
+        left:15%;
+        opacity:.15;
+        animation:float 12s ease-in-out infinite;
+      }
+
+      /* Grid */
+
+      .grid{
+        position:absolute;
+        inset:0;
+        background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+
+        background-size:50px 50px;
+      }
+
+      .login-card{
+        width:420px;
+        background:rgba(255,255,255,.04);
+        border:1px solid rgba(255,255,255,.08);
+        border-radius:24px;
+        padding:45px;
+        backdrop-filter:blur(10px);
+        position:relative;
+        z-index:10;
+        animation:fadeUp .8s ease;
+      }
+
+      .logo{
+        width:70px;
+        height:70px;
+        margin:auto;
+        margin-bottom:25px;
+        border-radius:18px;
+        background:linear-gradient(
+          135deg,
+          #2563EB,
+          #06B6D4
+        );
+
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        font-size:30px;
+      }
+
+      h1{
+        color:white;
+        text-align:center;
+        font-size:30px;
+        margin-bottom:8px;
+      }
+
+      .subtitle{
+        text-align:center;
+        color:#94A3B8;
+        margin-bottom:35px;
+      }
+
+      .input{
+        width:100%;
+        padding:16px;
+        background:#0A1140;
+        border:1px solid rgba(255,255,255,.08);
+        border-radius:14px;
+        color:white;
+        font-size:15px;
+        outline:none;
+        margin-bottom:20px;
+      }
+
+      .input:focus{
+        border-color:#2563EB;
+      }
+
+      .btn{
+        width:100%;
+        padding:16px;
+        border:none;
+        border-radius:14px;
+        background:linear-gradient(
+          135deg,
+          #2563EB,
+          #06B6D4
+        );
+
+        color:white;
+        font-size:15px;
+        font-weight:600;
+        cursor:pointer;
+        transition:.3s;
+      }
+
+      .btn:hover{
+        transform:translateY(-2px);
+      }
+
+      .footer{
+        margin-top:20px;
+        text-align:center;
+        color:#64748B;
+        font-size:13px;
+      }
+
+      `}</style>
+
+      <div className="login-page">
+
+        <div className="blob blob1"></div>
+        <div className="blob blob2"></div>
+        <div className="blob blob3"></div>
+
+        <div className="grid"></div>
+
+        <div className="login-card">
+
+          <div className="logo">🛡️</div>
+
+          <h1>Admin Portal</h1>
+
+          <p className="subtitle">
+            Secure Management Access
+          </p>
+
+          <form onSubmit={handleSubmit}>
+
             <input
               type="password"
-              placeholder="Password"
+              className="input"
+              placeholder="Enter Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '12px 14px 12px 38px',
-                backgroundColor: 'rgba(255,255,255,0.06)',
-                border: '1px solid var(--clr-border)',
-                borderRadius: '12px',
-                fontSize: '14px',
-                color: 'var(--clr-text)',
-                outline: 'none',
-                boxSizing: 'border-box',
-                textAlign: 'left'
-              }}
               required
             />
+
+            <button className="btn">
+              Sign In
+            </button>
+
+          </form>
+
+          <div className="footer">
+            Enterprise Security Protected
           </div>
 
-          <button
-            type="submit"
-            style={{
-              width: '100%',
-              backgroundColor: 'var(--clr-button)',
-              color: '#ffffff',
-              fontWeight: '600',
-              fontSize: '12px',
-              textTransform: 'uppercase',
-              letterSpacing: '1px',
-              padding: '14px',
-              border: 'none',
-              borderRadius: '14px',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              boxShadow: '0 14px 30px rgba(0,0,0,0.24)'
-            }}
-          >
-            Sign In ➔
-          </button>
-        </form>
-
-        <div style={{ marginTop: '40px' }}>
-          <a href="#" style={{ 
-            fontSize: '12px', 
-            color: 'var(--clr-text-muted)', 
-            textDecoration: 'none', 
-            fontWeight: '500',
-            borderBottom: '1px solid rgba(255,255,255,0.12)',
-            paddingBottom: '2px'
-          }}>
-            Return to Website ↗
-          </a>
         </div>
 
       </div>
-    </div>
+    </>
   );
 }
